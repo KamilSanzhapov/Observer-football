@@ -5,7 +5,6 @@ import 'package:football_explorer/data/repo/league_repository.dart';
 import 'package:football_explorer/domain/models/country.dart';
 import 'package:football_explorer/domain/models/league.dart';
 
-
 class CountryCubit extends Cubit<CountryState> {
   CountryCubit() : super(CountryLoadingState());
 
@@ -24,6 +23,18 @@ class CountryCubit extends Cubit<CountryState> {
     } catch (_) {
       emit(CountryErrorState());
     }
+  }
+
+  Future<void> fetchFavLeague(final List<Country> cacheCountryList) async {
+    try {
+      final List<League> _loadedFavLeagues =
+          await LeagueRepository.getAllFavLeagues();
+      if (cacheCountryList.isEmpty && _loadedFavLeagues.isEmpty)
+        emit(CountryEmptyState());
+      else
+        emit(CountryLoadedState(
+            loadedCountries: cacheCountryList, favLeagues: _loadedFavLeagues));
+    } catch (_) {}
   }
 }
 

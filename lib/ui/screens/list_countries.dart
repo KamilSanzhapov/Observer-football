@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:football_explorer/constants.dart';
 import 'package:football_explorer/data/database/database.dart';
 import 'package:football_explorer/domain/cubit/contry_cubit.dart';
-import 'package:football_explorer/domain/cubit/league_cubit.dart';
 import 'package:football_explorer/domain/models/country.dart';
 import 'package:football_explorer/domain/models/league.dart';
 import 'package:football_explorer/main.dart';
@@ -48,6 +47,8 @@ class _CountryListState extends State<CountryList> {
 }
 
 class CountryListView extends StatelessWidget {
+  var countriesCache = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CountryCubit, CountryState>(builder: (context, state) {
@@ -56,25 +57,19 @@ class CountryListView extends StatelessWidget {
   }
 
   Widget _generateBody(CountryState state, BuildContext ctx) {
-    switch (state.runtimeType) {
-      case CountryLoadingState:
-        return LoadingStateList();
-      case CountryErrorState:
-        return ErrorStateList(FETCH_ERROR_COUNTRY_LIST);
-      case CountryLoadedState:
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: _generateList(
-            collectShowList(
-              (state as CountryLoadedState).loadedCountries,
-              (state as CountryLoadedState).favLeagues,
-            ),
-          ),
-        );
-      case LeagueEmptyState:
-      default:
-        return NoDataStateList();
+    if (state is CountryLoadingState) return LoadingStateList();
+    if (state is CountryErrorState)
+      return ErrorStateList(FETCH_ERROR_COUNTRY_LIST);
+    if (state is CountryLoadedState) {
+      countriesCache = state.loadedCountries;
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: _generateList(
+          collectShowList(state.loadedCountries, state.favLeagues),
+        ),
+      );
     }
+    return NoDataStateList();
   }
 
   ListView _generateList(List<ListItem> items) {
@@ -102,8 +97,12 @@ class CountryListView extends StatelessWidget {
               Navigator.pushNamed(context, ROUTE_LEAGUE_DETAIL, arguments: 1);
             },
             trailing: FavoriteStar(
+              league: league,
               isPressed: league.isFavorite,
-              onSwitch: (isPressed) async {},
+              onSwitch: (isPressed) async {
+                final CountryCubit countryCubit = context.bloc<CountryCubit>();
+                await countryCubit.fetchFavLeague(countriesCache);
+              },
             ),
           );
         } else if (item is CountryItem) {
@@ -111,9 +110,11 @@ class CountryListView extends StatelessWidget {
           return Tile(
             text: country.name,
             logoUrl: country.logo,
-            onTap: () {
-              Navigator.pushNamed(context, ROUTE_LIST_LEAGUES,
+            onTap: () async {
+              await Navigator.pushNamed(context, ROUTE_LIST_LEAGUES,
                   arguments: country);
+              final CountryCubit countryCubit = context.bloc<CountryCubit>();
+              await countryCubit.fetchFavLeague(countriesCache);
             },
           );
         }
