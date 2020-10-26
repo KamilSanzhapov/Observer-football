@@ -32,7 +32,7 @@ class _CountryListState extends State<CountryList> {
       child: Scaffold(
         backgroundColor: Color.fromRGBO(255, 255, 255, 0.9),
         appBar: getAppBar(context, APP_BAR_COUNTRY_LIST, actions: [
-          SwitchTheme(),
+          //SwitchTheme(),
         ]),
         body: PullToRefresh(
           child: CountryListView(),
