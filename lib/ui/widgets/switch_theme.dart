@@ -25,14 +25,6 @@ class _SwitchThemeState extends State<SwitchTheme>
           isNightTheme ? Icons.wb_sunny_outlined : Icons.nights_stay_outlined),
       onPressed: () => _handleOnPressed(),
     );
-    IconButton(
-      // iconSize: 50,
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.play_pause,
-        progress: _animationController,
-      ),
-      onPressed: () => _handleOnPressed(),
-    );
   }
 
   void _handleOnPressed() {

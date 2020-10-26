@@ -22,8 +22,8 @@ class LeagueRepository {
     await DBProvider.db.deleteFavLeague(int.parse(leagueId));
   }
 
-  static Future<List<String>> getFavIdsByCountryId(String countryId) async {
-    List<String> favIds = await DBProvider.db.getFavIdsByCountryId(int.parse(countryId));
-    return favIds;
+  static Future<List<League>> getAllFavLeagues() async {
+    List<FavLeagueDTO> favLeagues = await DBProvider.db.getAllFavLeagues();
+    return fromLeaguesDTO(favLeagues);
   }
 }

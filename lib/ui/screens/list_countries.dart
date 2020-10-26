@@ -6,12 +6,13 @@ import 'package:football_explorer/data/database/database.dart';
 import 'package:football_explorer/domain/cubit/contry_cubit.dart';
 import 'package:football_explorer/domain/cubit/league_cubit.dart';
 import 'package:football_explorer/domain/models/country.dart';
+import 'package:football_explorer/domain/models/league.dart';
 import 'package:football_explorer/main.dart';
 import 'package:football_explorer/ui/widgets/app_bar.dart';
+import 'package:football_explorer/ui/widgets/favorite_star.dart';
 import 'package:football_explorer/ui/widgets/list_states.dart';
 import 'package:football_explorer/ui/widgets/list_tile.dart';
 import 'package:football_explorer/ui/widgets/pull_to_refresh.dart';
-import 'package:football_explorer/ui/widgets/switch_theme.dart';
 
 class CountryList extends StatefulWidget {
   @override
@@ -44,12 +45,6 @@ class _CountryListState extends State<CountryList> {
       ),
     );
   }
-
-  IconButton _settingBtn(BuildContext context) {
-    //AnimationController animationController =
-    var isNightTheme = false;
-    return IconButton(icon: Icon(Icons.nights_stay_outlined), onPressed: () {});
-  }
 }
 
 class CountryListView extends StatelessWidget {
@@ -67,27 +62,101 @@ class CountryListView extends StatelessWidget {
       case CountryErrorState:
         return ErrorStateList(FETCH_ERROR_COUNTRY_LIST);
       case CountryLoadedState:
-        return _generateList((state as CountryLoadedState).loadedCountries);
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: _generateList(
+            collectShowList(
+              (state as CountryLoadedState).loadedCountries,
+              (state as CountryLoadedState).favLeagues,
+            ),
+          ),
+        );
       case LeagueEmptyState:
       default:
         return NoDataStateList();
     }
   }
 
-  ListView _generateList(List<Country> countries) {
+  ListView _generateList(List<ListItem> items) {
     return ListView.builder(
-      itemCount: countries.length,
+      itemCount: items.length,
       itemBuilder: (context, index) {
-        Country country = countries[index];
-        return Tile(
-          text: country.name,
-          logoUrl: country.logo,
-          onTap: () {
-            Navigator.pushNamed(context, ROUTE_LIST_LEAGUES,
-                arguments: country);
-          },
-        );
+        ListItem item = items[index];
+        if (item is HeadingItem) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Text(
+              item.heading,
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  fontSize: 18,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w800),
+            ),
+          );
+        } else if (item is FavLeagueItem) {
+          League league = item.league;
+          return Tile(
+            text: league.leagueName,
+            logoUrl: league.leagueLogo,
+            onTap: () {
+              Navigator.pushNamed(context, ROUTE_LEAGUE_DETAIL, arguments: 1);
+            },
+            trailing: FavoriteStar(
+              isPressed: league.isFavorite,
+              onSwitch: (isPressed) async {},
+            ),
+          );
+        } else if (item is CountryItem) {
+          Country country = item.country;
+          return Tile(
+            text: country.name,
+            logoUrl: country.logo,
+            onTap: () {
+              Navigator.pushNamed(context, ROUTE_LIST_LEAGUES,
+                  arguments: country);
+            },
+          );
+        }
+        return Container();
       },
     );
   }
+
+  List<ListItem> collectShowList(
+      List<Country> countries, List<League> favLeagues) {
+    List<ListItem> list = [];
+    if (favLeagues.isNotEmpty) {
+      list.add(HeadingItem(heading: FAVORITE_LEAGUES_HEADING));
+      list.addAll(favLeagues.map((favLeague) {
+        return FavLeagueItem(league: favLeague);
+      }).toList());
+    }
+    if (countries.isNotEmpty) {
+      list.add(HeadingItem(heading: MORE_LEAGUES_HEADING));
+      list.addAll(countries.map((country) {
+        return CountryItem(country: country);
+      }).toList());
+    }
+    return list;
+  }
+}
+
+abstract class ListItem {}
+
+class FavLeagueItem extends ListItem {
+  League league;
+
+  FavLeagueItem({this.league});
+}
+
+class CountryItem extends ListItem {
+  Country country;
+
+  CountryItem({this.country});
+}
+
+class HeadingItem extends ListItem {
+  String heading;
+
+  HeadingItem({this.heading});
 }

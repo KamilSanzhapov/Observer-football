@@ -4,7 +4,7 @@ import 'package:football_explorer/domain/models/league.dart';
 
 List<League> fromLeagueResponse(
     List<LeagueResponse> leagueRepository, List<String> favIds) {
-  if (leagueRepository.isEmpty) return [];
+  if (leagueRepository == null || leagueRepository.isEmpty) return [];
   var list = leagueRepository.map((leagueResponse) {
     return League(
       leagueId: leagueResponse.league_id,
@@ -26,4 +26,18 @@ FavLeagueDTO toFavLeagueDTO(League league) {
     season: league.leagueSeason,
     countryId: int.parse(league.countryId),
   );
+}
+List<League> fromLeaguesDTO(List<FavLeagueDTO> leaguesDTO){
+  if (leaguesDTO == null || leaguesDTO.isEmpty) return [];
+  var list = leaguesDTO.map((leagueDTO) {
+    return League(
+      leagueId: leagueDTO.id.toString(),
+      leagueName: leagueDTO.name,
+      leagueSeason: leagueDTO.season,
+      leagueLogo: leagueDTO.logo,
+      countryId: leagueDTO.countryId.toString(),
+      isFavorite: true
+    );
+  }).toList();
+  return list;
 }
