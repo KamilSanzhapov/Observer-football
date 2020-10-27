@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 AppBar getAppBar(BuildContext context, String _title,
-    {Widget icon, List<Widget> actions}) {
+    {Widget icon, List<Widget> actions, Widget bottom}) {
   return AppBar(
     title: Row(
       mainAxisSize: MainAxisSize.min,
@@ -19,5 +19,6 @@ AppBar getAppBar(BuildContext context, String _title,
     centerTitle: true,
     backgroundColor: Colors.black87,
     actions: actions,
+    bottom: bottom,
   );
 }

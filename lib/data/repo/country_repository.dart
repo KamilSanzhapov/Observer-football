@@ -1,8 +1,6 @@
-
 import 'package:football_explorer/data/converters/converter_country.dart';
+import 'package:football_explorer/data/network/api_service.dart';
 import 'package:football_explorer/domain/models/country.dart';
-
-import '../network/api_service.dart';
 
 class CountryRepository {
   static Future<List<Country>> getCountries() async {

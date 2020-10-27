@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:football_explorer/constants.dart';
 import 'package:football_explorer/data/network/country/country_response.dart';
 import 'package:football_explorer/data/network/league/league_response.dart';
+import 'package:football_explorer/data/network/standings/standings_response.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -29,4 +30,6 @@ abstract class ApiService {
     @Query("country_id") String countryId, {
     @Query("action") String action = "get_leagues",
   });
+
+
 }

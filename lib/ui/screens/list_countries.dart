@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:football_explorer/app/route/generate_routes.dart';
 import 'package:football_explorer/constants.dart';
 import 'package:football_explorer/data/database/database.dart';
 import 'package:football_explorer/domain/cubit/contry_cubit.dart';
 import 'package:football_explorer/domain/models/country.dart';
 import 'package:football_explorer/domain/models/league.dart';
-import 'package:football_explorer/main.dart';
 import 'package:football_explorer/ui/widgets/app_bar.dart';
 import 'package:football_explorer/ui/widgets/favorite_star.dart';
 import 'package:football_explorer/ui/widgets/list_states.dart';
@@ -91,7 +91,7 @@ class CountryListView extends StatelessWidget {
             text: league.leagueName,
             logoUrl: league.leagueLogo,
             onTap: () async{
-              await Navigator.pushNamed(context, ROUTE_LIST_EVENTS, arguments: league);
+              await Navigator.pushNamed(context, ROUTE_LEAGUE_DETAIL, arguments: league);
               final CountryCubit countryCubit = context.bloc<CountryCubit>();
               await countryCubit.fetchFavLeague(loadedCountries);
             },

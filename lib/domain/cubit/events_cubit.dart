@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EventCubit extends Cubit<EventState> {
-  EventCubit() : super(EventLoadingState());
+class EventsCubit extends Cubit<EventsState> {
+  EventsCubit() : super(EventLoadingState());
 
   Future<void> fetchEvents(String countryId) async {
     try {
@@ -19,17 +19,17 @@ class EventCubit extends Cubit<EventState> {
   }
 }
 
-abstract class EventState {}
+abstract class EventsState {}
 
-class EventEmptyState extends EventState {}
+class EventEmptyState extends EventsState {}
 
-class EventLoadingState extends EventState {}
+class EventLoadingState extends EventsState {}
 
-class EventLoadedState extends EventState {
+class EventLoadedState extends EventsState {
   List<dynamic> loadedEvents;
 
   EventLoadedState({@required this.loadedEvents})
       : assert(loadedEvents != null);
 }
 
-class EventErrorState extends EventState {}
+class EventErrorState extends EventsState {}

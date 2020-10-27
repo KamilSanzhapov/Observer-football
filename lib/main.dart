@@ -5,10 +5,6 @@ import 'package:football_explorer/ui/screens/list_countries.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-const String ROUTE_LIST_COUNTRIES = "list_countries";
-const String ROUTE_LIST_LEAGUES = "list_leagues";
-const String ROUTE_LIST_EVENTS = "list_events";
-
 void main() {
   runApp(
     ChangeNotifierProvider(

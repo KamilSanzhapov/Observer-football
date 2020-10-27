@@ -6,6 +6,7 @@ const String API_KEY =
 const String APP_BAR_COUNTRY_LIST = "Observer football";
 const String FETCH_ERROR_LEAGUE_LIST = 'Error fetching leagues';
 const String FETCH_ERROR_COUNTRY_LIST = 'Error fetching countries';
+const String FETCH_ERROR_EVENT_LIST = 'Error fetching events';
 
 const String FAVORITE_LEAGUES_HEADING = 'Favorite leagues';
 const String MORE_LEAGUES_HEADING = 'More leagues';
