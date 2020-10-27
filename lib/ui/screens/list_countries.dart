@@ -91,7 +91,7 @@ class CountryListView extends StatelessWidget {
             text: league.leagueName,
             logoUrl: league.leagueLogo,
             onTap: () {
-              Navigator.pushNamed(context, ROUTE_LEAGUE_DETAIL, arguments: 1);
+              Navigator.pushNamed(context, ROUTE_LIST_EVENTS, arguments: 1);
             },
             trailing: FavoriteStar(
               league: league,
