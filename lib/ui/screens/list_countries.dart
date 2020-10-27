@@ -31,7 +31,7 @@ class _CountryListState extends State<CountryList> {
     return BlocProvider<CountryCubit>(
       create: (context) => CountryCubit(),
       child: Scaffold(
-        appBar: getAppBar(context, APP_BAR_COUNTRY_LIST, icon: SwitchTheme(), actions: [
+        appBar: getAppBar(context, APP_BAR_COUNTRY_LIST, actions: [
           SwitchTheme(),
         ]),
         body: PullToRefresh(
@@ -79,9 +79,10 @@ class CountryListView extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Text(
               item.heading,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(fontSize: 18, fontWeight: FontWeight.w800),
             ),
           );
         } else if (item is FavLeagueItem) {
