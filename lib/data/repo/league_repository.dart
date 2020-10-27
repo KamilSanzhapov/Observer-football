@@ -1,14 +1,19 @@
 import 'package:football_explorer/data/converters/converter_league.dart';
 import 'package:football_explorer/data/database/database.dart';
 import 'package:football_explorer/data/database/fav_league_dto.dart';
+import 'package:football_explorer/data/network/api_service.dart';
 import 'package:football_explorer/domain/models/league.dart';
 
-import '../network/api_service.dart';
 
 class LeagueRepository {
-  static Future<List<League>> getLeagues(String countryId) async {
-    final api = ApiService.create();
-    var list = await api.getLeagues(countryId);
+  static Future<List<League>> getLeagues(String countryId, {List<League> cacheLeagues}) async {
+    var list = [];
+    if(cacheLeagues == null){
+      final api = ApiService.create();
+      list = await api.getLeagues(countryId);
+    }else{
+      list = cacheLeagues;
+    }
     List<String> favIds = await DBProvider.db.getFavIdsByCountryId(int.parse(countryId));
     return fromLeagueResponse(list, favIds);
   }

@@ -37,7 +37,7 @@ class _LeaguesListState extends State<LeaguesList> {
         body: Padding(
           padding: EdgeInsets.only(left: 16, right: 16),
           child: PullToRefresh(
-            child: _LeagueListView(),
+            child: _LeagueListView(country: widget.country),
             onRefresh: (ctx) async {
               final LeagueCubit leagueCubit = ctx.bloc<LeagueCubit>();
               await leagueCubit.fetchLeagues(widget.country.id.toString());
@@ -50,6 +50,10 @@ class _LeaguesListState extends State<LeaguesList> {
 }
 
 class _LeagueListView extends StatelessWidget {
+  final Country country;
+
+  _LeagueListView({this.country});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LeagueCubit, LeagueState>(builder: (context, state) {
@@ -81,16 +85,18 @@ class _LeagueListView extends StatelessWidget {
         return Tile(
           text: league.leagueName,
           logoUrl: league.leagueLogo,
-          onTap: () {
-            Navigator.pushNamed(context, ROUTE_LIST_EVENTS, arguments: 1);
+          onTap: () async {
+            await Navigator.pushNamed(context, ROUTE_LIST_EVENTS,
+                arguments: league);
+            final LeagueCubit leagueCubit = context.bloc<LeagueCubit>();
+            await leagueCubit.fetchLeagues(country.id.toString(), cacheLeagues: leagues);
           },
           subtitle: league.leagueSeason,
           trailing: FavoriteStar(
             league: league,
             isPressed: league.isFavorite,
             onSwitch: (isPressed) async {
-              //final LeagueCubit leagueCubit = context.bloc<LeagueCubit>();
-              //     await leagueCubit.fetchLeagues(country.id.toString());
+              league.isFavorite = isPressed;
             },
           ),
         );

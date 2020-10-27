@@ -90,8 +90,10 @@ class CountryListView extends StatelessWidget {
           return Tile(
             text: league.leagueName,
             logoUrl: league.leagueLogo,
-            onTap: () {
-              Navigator.pushNamed(context, ROUTE_LIST_EVENTS, arguments: 1);
+            onTap: () async{
+              await Navigator.pushNamed(context, ROUTE_LIST_EVENTS, arguments: league);
+              final CountryCubit countryCubit = context.bloc<CountryCubit>();
+              await countryCubit.fetchFavLeague(loadedCountries);
             },
             trailing: FavoriteStar(
               league: league,

@@ -1,16 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'file:///C:/projects/flutter_pr/football_explorer/lib/data/repo/league_repository.dart';
+import 'package:football_explorer/data/repo/league_repository.dart';
 import 'package:football_explorer/domain/models/league.dart';
+
 
 class LeagueCubit extends Cubit<LeagueState> {
   LeagueCubit() : super(LeagueLoadingState());
 
-  Future<void> fetchLeagues(String countryId) async {
+  Future<void> fetchLeagues(String countryId, {List<League> cacheLeagues}) async {
     try {
       // emit(LeagueLoadingState());
       final List<League> _loadedLeagueList =
-          await LeagueRepository.getLeagues(countryId);
+          await LeagueRepository.getLeagues(countryId, cacheLeagues: cacheLeagues);
       if (_loadedLeagueList.isEmpty)
         emit(LeagueEmptyState());
       else

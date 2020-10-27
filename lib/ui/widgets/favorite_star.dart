@@ -35,7 +35,7 @@ class _FavoriteStarState extends State<FavoriteStar> {
           return IconButton(
             icon: isPressed
                 ? Icon(Icons.star, color: Colors.orangeAccent)
-                : Icon(Icons.star_border, color: Theme.of(context).accentColor),
+                : Icon(Icons.star_border),
             onPressed: () async {
               isPressed = !isPressed;
               if (isPressed)

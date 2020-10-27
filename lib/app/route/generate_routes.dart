@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:football_explorer/domain/models/country.dart';
+import 'package:football_explorer/domain/models/league.dart';
 import 'package:football_explorer/main.dart';
-import 'package:football_explorer/ui/screens/list_event.dart';
 import 'package:football_explorer/ui/screens/list_countries.dart';
+import 'package:football_explorer/ui/screens/list_events.dart';
 import 'package:football_explorer/ui/screens/list_leagues.dart';
 
 MaterialPageRoute getRoutes(RouteSettings settings) {
@@ -17,7 +18,8 @@ MaterialPageRoute getRoutes(RouteSettings settings) {
           builder: (context) => LeaguesList(country: country));
       break;
     case ROUTE_LIST_EVENTS:
-      return MaterialPageRoute(builder: (context) => EventList());
+      League league = settings.arguments;
+      return MaterialPageRoute(builder: (context) => EventList(league: league));
       break;
   }
   return MaterialPageRoute(builder: (context) => CountryList());
