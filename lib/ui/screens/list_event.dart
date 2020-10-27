@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:football_explorer/ui/widgets/app_bar.dart';
 
-class LeagueDetail extends StatefulWidget {
+class EventList extends StatefulWidget {
   @override
-  _LeagueDetailState createState() => _LeagueDetailState();
+  _EventListState createState() => _EventListState();
 }
 
-class _LeagueDetailState extends State<LeagueDetail> {
+class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
