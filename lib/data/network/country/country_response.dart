@@ -1,8 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'country_response.g.dart';
-
-
+// ignore_for_file: non_constant_identifier_names
 @JsonSerializable()
 class CountryResponse {
   String country_id;

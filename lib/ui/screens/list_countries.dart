@@ -47,8 +47,6 @@ class _CountryListState extends State<CountryList> {
 }
 
 class CountryListView extends StatelessWidget {
-  var countriesCache = [];
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CountryCubit, CountryState>(builder: (context, state) {
@@ -61,18 +59,17 @@ class CountryListView extends StatelessWidget {
     if (state is CountryErrorState)
       return ErrorStateList(FETCH_ERROR_COUNTRY_LIST);
     if (state is CountryLoadedState) {
-      countriesCache = state.loadedCountries;
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
-        child: _generateList(
-          collectShowList(state.loadedCountries, state.favLeagues),
-        ),
+        child: _generateList(state.loadedCountries, state.favLeagues),
       );
     }
     return NoDataStateList();
   }
 
-  ListView _generateList(List<ListItem> items) {
+  ListView _generateList(
+      List<Country> loadedCountries, List<League> favLeagues) {
+    List<ListItem> items = collectShowList(loadedCountries, favLeagues);
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
@@ -101,7 +98,7 @@ class CountryListView extends StatelessWidget {
               isPressed: league.isFavorite,
               onSwitch: (isPressed) async {
                 final CountryCubit countryCubit = context.bloc<CountryCubit>();
-                await countryCubit.fetchFavLeague(countriesCache);
+                await countryCubit.fetchFavLeague(loadedCountries);
               },
             ),
           );
@@ -114,7 +111,7 @@ class CountryListView extends StatelessWidget {
               await Navigator.pushNamed(context, ROUTE_LIST_LEAGUES,
                   arguments: country);
               final CountryCubit countryCubit = context.bloc<CountryCubit>();
-              await countryCubit.fetchFavLeague(countriesCache);
+              await countryCubit.fetchFavLeague(loadedCountries);
             },
           );
         }

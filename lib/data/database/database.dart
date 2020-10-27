@@ -33,7 +33,7 @@ class DBProvider {
   }
 
   Future<void> init() async {
-    var db = await this.database;
+    await this.database;
   }
 
   void _createDb(Database db, int version) async {
