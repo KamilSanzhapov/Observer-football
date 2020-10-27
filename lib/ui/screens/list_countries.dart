@@ -12,6 +12,7 @@ import 'package:football_explorer/ui/widgets/favorite_star.dart';
 import 'package:football_explorer/ui/widgets/list_states.dart';
 import 'package:football_explorer/ui/widgets/list_tile.dart';
 import 'package:football_explorer/ui/widgets/pull_to_refresh.dart';
+import 'package:football_explorer/ui/widgets/switch_theme.dart';
 
 class CountryList extends StatefulWidget {
   @override
@@ -30,9 +31,8 @@ class _CountryListState extends State<CountryList> {
     return BlocProvider<CountryCubit>(
       create: (context) => CountryCubit(),
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 0.9),
-        appBar: getAppBar(context, APP_BAR_COUNTRY_LIST, actions: [
-          //SwitchTheme(),
+        appBar: getAppBar(context, APP_BAR_COUNTRY_LIST, icon: SwitchTheme(), actions: [
+          SwitchTheme(),
         ]),
         body: PullToRefresh(
           child: CountryListView(),
@@ -84,7 +84,6 @@ class CountryListView extends StatelessWidget {
               item.heading,
               style: Theme.of(context).textTheme.bodyText1.copyWith(
                   fontSize: 18,
-                  color: Colors.black54,
                   fontWeight: FontWeight.w800),
             ),
           );
