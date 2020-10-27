@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-//part 'country_response.g.dart';
+part 'country_response.g.dart';
 // ignore_for_file: non_constant_identifier_names
 @JsonSerializable()
 class CountryResponse {
@@ -14,8 +14,8 @@ class CountryResponse {
     this.country_logo,
   });
 
-  // factory CountryResponse.fromJson(Map<String, dynamic> json) =>
-  //     _$CountryResponseFromJson(json);
-  //
-  // Map<String, dynamic> toJson() => _$CountryResponseToJson(this);
+  factory CountryResponse.fromJson(Map<String, dynamic> json) =>
+      _$CountryResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CountryResponseToJson(this);
 }

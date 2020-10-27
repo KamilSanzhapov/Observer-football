@@ -31,5 +31,11 @@ abstract class ApiService {
     @Query("action") String action = "get_leagues",
   });
 
+  @GET("")
+  Future<List<LeagueResponse>> getStandings(
+      @Query("league_id") String leagueId, {
+        @Query("action") String action = "get_standings",
+      });
+
 
 }
