@@ -9,13 +9,10 @@ class SwitchTheme extends StatefulWidget {
 
 class _SwitchThemeState extends State<SwitchTheme>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 2));
   }
 
   @override
